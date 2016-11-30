@@ -1,6 +1,6 @@
 package MainFolder;
 
-    /*   ПРОЕКТЫ мой - Trader & Юрия Ткача - JavaPractice03 ИДЕНТИЧНЫ */
+    /*  ПРОЕКТЫ мой - Trader & Юрия Ткача - JavaPractice03 ИДЕНТИЧНЫ */
 
 import java.util.Scanner;
     /*  В этой программе классы  Deal, Party, Product проанализированы и
