@@ -23,12 +23,12 @@ import java.io.InputStreamReader;
 
 public class MainAlias
 {
-    /* Создаем приватные переменные, задающие количества циклов
+    /* Создаем приватные КОНСТАНТЫ, задающие количества циклов
           обращения к методам класса и определяющие для пользователя
           количество товаров и количество сделок, которые позволяет
-           обрабатывать данная программа*/
+           обрабатывать данная программа. Константы пишутся БОЛЬШИМИ БУКВАМИ*/
     private static final int MAX_PRODUCTS = 2;
-    private static final int MAX_DEALS = 2;
+    private static final int MAX_DEALS = 1; // у4_Изменено 2 на 1
 
     /* Создаем приватный массив deals типа Deal в классе Program */
     private Deal[] deals;
@@ -89,8 +89,24 @@ public class MainAlias
 
             System.out.println("Sum: " + deal.getSum());
             System.out.println("----------------------------");
+
+            // у4_Добавленные строки, в сравнении с Уроком 3. Появился новый метод outputParty()
+            outputParty(deal.getBuyer());
+            outputParty(deal.getSeller());
         }
     }
+
+    /* у4_Это Добавленный новый метод, по отношению к Уроку 3. Метод выводит на экран */
+    private void outputParty(Party party) {
+        System.out.println(party.getName() + ":");
+        System.out.println("Address: " + party.getAddress());
+        for (int i = 0; i < party.getKeys().length; i++) {
+            System.out.println("  " + party.getKeys()[i] + " = "
+                    + party.getValues()[i]);
+        }
+    }
+
+
     // Это метод ВВОД-input(), который в свою очередь, использует метод ВВОД СДЕЛКИ-inputDeal()
     // ВВОД организует цикл из 2-х витков и заполняет массив deals[i] элементами inputDeal()
     private void input() /*throws Exception*/{
@@ -138,22 +154,74 @@ public class MainAlias
        новый объект с новыми полями
       */
     private Product inputProduct() /*throws Exception*/{
-		/* Здесь идет подготовка - ввод значений переменных с клавиатуры
+
+        System.out.println("  Input product ->");
+
+        // у4_Одна строка. Новая переменная по сравнению с уроком 3.
+        // Здесь вводится с клавиатуры индекс типа продукта: 1 или 2.
+        String productType = keyboard("    1 - Foto, 2 - Botinki");
+
+        /* Здесь идет подготовка - ввод значений переменных с клавиатуры
 		   В качестве аргумента метода keyboard() вводится текст,
 		   который предшествует вводу текста с клавиатуры*/
-        System.out.println("  Input product ->");
         String title = keyboard("    Name");
         String price = keyboard("    Price");
         String quan = keyboard("    Quantity");
 
-		/* Здесь создается новый объект и в него вводятся новые аргументы (переменные) */
-        Product product = new Product();
+		/* Здесь создается новый объект и в него вводятся новые аргументы (переменные)
+		   Эта строка была легитимна в уроке 3.
+		   у4_ В уроке 4 эта строка - удалена из кода. Вместо нее в код включена строка
+		   Product product = null;  */
+                         //Product product = new Product();
+        Product product = null;
+
+        // у4_*********
+
+        //Если тип продукта, введенный с клавиатуры, - это 1, то это fotoProduct
+        if (productType.equals("1")) {
+            String megapx = keyboard("    Megapixel");
+            String digital = keyboard("    True - Digital, False - Non-Digital");
+
+            FotoProduct fotoProduct = new FotoProduct();
+            fotoProduct.setDigital(Boolean.valueOf(digital));
+            fotoProduct.setMegapx(Double.valueOf(megapx));
+
+            product = fotoProduct;
+
+        //Если тип продукта, введенный с клавиатуры, - это 2, то это botinkiProduct
+        } else if (productType.equals("2")) {
+            String size = keyboard("    Size");
+            String color = keyboard("    Color");
+
+            BotinkiProduct botinkiProduct = new BotinkiProduct();
+            botinkiProduct.setSize(Integer.valueOf(size));
+            botinkiProduct.setColor(color);
+
+            product = botinkiProduct;
+
+        /* Если тип продукта, введенный с клавиатуры, не 1 и не 2- это - ОШИБКА и
+		   выход из программы кодом выхода -1  */
+        } else {
+            // Вывод на экран коричневого сообщения об ошибке "Unknown product"
+            System.err.println("Unknown product");
+            /* Выход из программы с выводом на экран сообщения темно-синего цвета
+			"Process finished with exit code -1"
+			 */
+            System.exit(-1);
+        }
+        // ИНТЕРЕСНОЕ ЦЕПОЧЕЧНОЕ if - поэтапное отфильтровывание условий
+        //у4_Конец **********
+
         product.setTitle(title);
         product.setPrice(Double.valueOf(price));
         product.setQuantity(Integer.valueOf(quan));
 
         return product;
     }
+
+
+
+
     /* Это метод ВВОД КОНТРАГЕНТА-inputParty(). Здесь вводятся с клавиатуры поле
        Party Name в созданный объект Party() и возвращается
        новый объект с новыми полями
@@ -163,10 +231,29 @@ public class MainAlias
 		   В качестве аргумента метода keyboard() вводится текст,
 		   который предшествует вводу текста с клавиатуры*/
         String partyName = keyboard("Party name");
+
+        // *****
+        String address = keyboard("    Party address");
+
+        String[] keys = new String[2];
+        String[] values = new String[2];
+
+        for (int i = 0; i < values.length; i++) {
+            keys[i] = keyboard("    Key" + (i + 1));
+            values[i] = keyboard("    Value" + (i + 1));
+        }
+        // *****
+
         Party party = new Party();
         party.setName(partyName);
+        // *****
+        party.setAddress(address);
+        party.setKeys(keys);
+        party.setValues(values);
+        // *****
         return party;
     }
+
 
     private String keyboard(String message) /*throws Exception*/{
 		/* Здесь выводится текст, который предшествует вводу текста с клавиатуры*/
