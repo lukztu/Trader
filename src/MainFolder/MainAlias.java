@@ -204,7 +204,7 @@ public class MainAlias
         } else {
             // Вывод на экран коричневого сообщения об ошибке "Unknown product"
             System.err.println("Unknown product");
-            /* Выход из программы с выводом на экран сообщения темно-синего цвета
+            /*  Выход из программы с выводом на экран сообщения темно-синего цвета
 			"Process finished with exit code -1"
 			 */
             System.exit(-1);
